@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Seller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">RE_07_2412_Assignment2_Group_1</a> &gt; <span class="el_source">Seller.java</span></div><h1>Seller.java</h1><pre class="source lang-java linenums">package RE_07_2412_Assignment2_Group_1;
+
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+
+<span class="nc" id="L7">public class Seller {</span>
+
+<span class="nc" id="L9">    private boolean flag = false;</span>
+
+    public void addSeller(Database data, Connection conn) throws SQLException {
+<span class="nc" id="L12">        data.addUser(conn, &quot;seller1&quot;, &quot;seller&quot;, &quot;234&quot;);</span>
+<span class="nc" id="L13">        flag = true;</span>
+<span class="nc" id="L14">    }</span>
+    
+    public void addP(String productcode, String productname, String producttype, String productnumber, String productprice, Database data, Connection conn) throws SQLException {
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if (Integer.parseInt(productnumber) &gt; 15) {</span>
+<span class="nc" id="L18">            System.out.println(&quot;The quantity added will be over than the limit (15).&quot;);</span>
+<span class="nc" id="L19">            flag = false;</span>
+        } else {
+<span class="nc" id="L21">            data.addProduct(conn, productcode, productname, producttype, productnumber, productprice);</span>
+<span class="nc" id="L22">            System.out.println(&quot;Modify successfully!&quot;);</span>
+        }
+<span class="nc" id="L24">        flag = true;</span>
+<span class="nc" id="L25">    }</span>
+
+    public void addToSold(String soldcode, String soldname, String soldtype, String soldnumber, String productnumber_string, String productprice, Database data, Connection conn) throws SQLException {
+<span class="nc" id="L28">        int n = Customer.getn();</span>
+<span class="nc" id="L29">        int sold = Integer.parseInt(soldnumber) + n;</span>
+<span class="nc" id="L30">        data.addSold(conn, soldcode, soldname, String.valueOf(sold));</span>
+<span class="nc" id="L31">        int productnumber = Integer.parseInt(productnumber_string) - n;</span>
+<span class="nc" id="L32">        data.addProduct(conn, soldcode, soldname, soldtype, String.valueOf(productnumber), productprice);</span>
+<span class="nc" id="L33">        flag = true;</span>
+<span class="nc" id="L34">    }</span>
+
+    public void getCurrentAvailable(Database data, Connection conn) throws SQLException, IOException {
+
+<span class="nc" id="L38">        BufferedOutputStream buffoutputstream = null; </span>
+
+        try {
+<span class="nc" id="L41">            try (BufferedWriter f = new BufferedWriter(new FileWriter(&quot;CurrentAvailable.txt&quot;))) {</span>
+<span class="nc" id="L42">                ResultSet rs = data.getProductData();</span>
+<span class="nc" id="L43">                String content=&quot;[productcode]&quot;+&quot;\t&quot;+&quot;[productname]&quot;+&quot;\t&quot;+&quot;[producttype]&quot;+&quot;\t&quot;+&quot;[productnumber]&quot;+&quot;\t&quot;+&quot;[productprice]&quot;+&quot;\n&quot;;</span>
+<span class="nc" id="L44">                f.write(content);</span>
+                try {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">                    while(rs.next()) {</span>
+<span class="nc" id="L47">                        content = rs.getString(&quot;productcode&quot;)+&quot;\t\t&quot;;</span>
+<span class="nc" id="L48">                        f.write(content);</span>
+<span class="nc" id="L49">                        content = rs.getString(&quot;productname&quot;)+&quot;\t\t&quot;;</span>
+<span class="nc" id="L50">                        f.write(content);</span>
+<span class="nc" id="L51">                        content = rs.getString(&quot;producttype&quot;)+&quot;\t\t&quot;;</span>
+<span class="nc" id="L52">                        f.write(content);</span>
+<span class="nc" id="L53">                        content = rs.getString(&quot;productnumber&quot;)+&quot;\t\t&quot;;</span>
+<span class="nc" id="L54">                        f.write(content);</span>
+<span class="nc" id="L55">                        content = rs.getString(&quot;productprice&quot;)+&quot;\n&quot;;</span>
+<span class="nc" id="L56">                        f.write(content);</span>
+                    }
+<span class="nc" id="L58">                } catch (SQLException e) {</span>
+<span class="nc" id="L59">                    e.printStackTrace();</span>
+<span class="nc" id="L60">                }</span>
+            }
+        }
+        finally {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (buffoutputstream != null)</span>
+                try {
+<span class="nc" id="L66">                    buffoutputstream.close();</span>
+<span class="nc" id="L67">                } catch (IOException e) {</span>
+<span class="nc" id="L68">                    e.printStackTrace();</span>
+<span class="nc" id="L69">                }</span>
+        }
+<span class="nc" id="L71">        flag = true;</span>
+<span class="nc" id="L72">    }</span>
+
+    public void getSoldReport(Database data, Connection conn) throws SQLException, IOException {
+        
+<span class="nc" id="L76">        BufferedOutputStream buffoutputstream = null;</span>
+        try {
+<span class="nc" id="L78">            try (BufferedWriter f = new BufferedWriter(new FileWriter(&quot;SoldReport.txt&quot;))) {</span>
+<span class="nc" id="L79">                ResultSet rs = data.getSold();</span>
+<span class="nc" id="L80">                String content = &quot;[soldcode]&quot;+&quot;\t&quot;+&quot;[soldname]&quot;+&quot;\t&quot;+&quot;[soldnumber]&quot;+&quot;\n&quot;;</span>
+<span class="nc" id="L81">                f.write(content);</span>
+                try {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">                    while(rs.next())</span>
+                    {
+<span class="nc" id="L85">                        content = rs.getString(&quot;soldcode&quot;)+&quot;\t&quot;;</span>
+<span class="nc" id="L86">                        f.write(content);</span>
+<span class="nc" id="L87">                        content = rs.getString(&quot;soldname&quot;)+&quot;\t&quot;;</span>
+<span class="nc" id="L88">                        f.write(content);</span>
+<span class="nc" id="L89">                        content = rs.getString(&quot;soldnumber&quot;)+&quot;\n&quot;;</span>
+<span class="nc" id="L90">                        f.write(content);</span>
+                    }
+<span class="nc" id="L92">                } catch (SQLException e) {</span>
+<span class="nc" id="L93">                    e.printStackTrace();</span>
+<span class="nc" id="L94">                }</span>
+            }
+        }
+        finally {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (buffoutputstream != null)</span>
+                try {
+<span class="nc" id="L100">                    buffoutputstream.close();</span>
+<span class="nc" id="L101">                } catch (IOException e) {</span>
+<span class="nc" id="L102">                    e.printStackTrace();</span>
+<span class="nc" id="L103">                }</span>
+        }
+<span class="nc" id="L105">        flag = true;</span>
+<span class="nc" id="L106">    }</span>
+
+    public boolean getflag(){
+<span class="nc" id="L109">        return this.flag;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

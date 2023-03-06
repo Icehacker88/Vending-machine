@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">RE_07_2412_Assignment2_Group_1</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package RE_07_2412_Assignment2_Group_1;
+
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Date;
+
+
+
+
+import java.sql.*;
+
+<span class="nc" id="L15">public class App {</span>
+
+    
+    private static Connection conn;
+<span class="nc" id="L19">    private static Database data = new Database();</span>
+<span class="nc" id="L20">    private static Customer customer = new Customer();</span>
+<span class="nc" id="L21">    private static CalculatePayment calculatePayment = new CalculatePayment();</span>
+<span class="nc" id="L22">    private static Owner owner = new Owner();</span>
+<span class="nc" id="L23">    private static Cashier cashier = new Cashier();</span>
+<span class="nc" id="L24">    private static Seller seller = new Seller();</span>
+<span class="nc" id="L25">    private static Timer timer = new Timer();</span>
+    private String currentdate;
+    private static String itemsold;
+    private static String moneypaid;
+    private static String returnedchange;
+<span class="nc" id="L30">    private static String paymentmethod = &quot;cash&quot;;</span>
+    //private static Customer c = new Customer();
+
+    // private static UserLogin login = new UserLogin();
+    // private static CustomerSignUp signUp = new CustomerSignUp();
+
+
+    public static void main(String[] args) throws IOException, SQLException {
+<span class="nc" id="L38">        ArrayList&lt;Integer&gt; cash_used_list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L39">        Date lastActiveTime = new Date();</span>
+<span class="nc" id="L40">        boolean Timerresult = true;</span>
+
+<span class="nc" id="L42">        data.connect();</span>
+<span class="nc" id="L43">        conn = data.getConn();</span>
+<span class="nc" id="L44">        data.createTableuser(conn);</span>
+<span class="nc" id="L45">        data.createTable(conn);</span>
+<span class="nc" id="L46">        data.createTablecurrentuser(conn);</span>
+<span class="nc" id="L47">        data.createTablecancel(conn);</span>
+<span class="nc" id="L48">        data.createTablecash(conn);</span>
+<span class="nc" id="L49">        data.createTableCard(conn);</span>
+<span class="nc" id="L50">        data.createTableSold(conn);</span>
+<span class="nc" id="L51">        data.addCard(conn, &quot;asdd&quot;, &quot;1234&quot;, &quot;customer1&quot;);</span>
+<span class="nc" id="L52">        data.addCash(conn, &quot;20dollar&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L53">        data.addCash(conn, &quot;10dollar&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L54">        data.addCash(conn, &quot;5dollar&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L55">        data.addCash(conn, &quot;2dollar&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L56">        data.addCash(conn, &quot;1dollar&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L57">        data.addCash(conn, &quot;50cent&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L58">        data.addCash(conn, &quot;20cent&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L59">        data.addCash(conn, &quot;10cent&quot;,&quot;10&quot;);</span>
+<span class="nc" id="L60">        data.addCash(conn, &quot;5cent&quot;,&quot;10&quot;);</span>
+        
+
+<span class="nc" id="L63">        seller.addSeller(data, conn);</span>
+<span class="nc" id="L64">        data.addUser(conn, &quot;customer1&quot;, &quot;customer&quot;, &quot;123&quot;);</span>
+<span class="nc" id="L65">        Scanner sc = new Scanner(System.in);  // Create a Scanner object</span>
+<span class="nc" id="L66">        System.out.println(&quot;To use this vendingmachine, user login is required. Enter a to login, Enter b to signup&quot;);</span>
+<span class="nc" id="L67">        System.out.println(&quot;Enter your option&quot;);</span>
+<span class="nc" id="L68">        String choice = sc.nextLine();</span>
+        // if(choice.equals(&quot;cancel&quot;)){
+        //     customer.cancelaccept(data,conn,choice);
+        //     System.out.println(&quot;Bye&quot;);
+        //     return;
+        // }
+        
+<span class="nc" id="L75">        data.addInituser(conn, &quot;owner1&quot;, &quot;owner&quot;, &quot;123&quot;);</span>
+
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if(choice.equals(&quot;a&quot;)){</span>
+<span class="nc" id="L78">            System.out.println(&quot;Enter username&quot;);</span>
+<span class="nc" id="L79">            String userName = sc.nextLine();  // Read user input</span>
+            // if(userName.equals(&quot;cancel&quot;)){
+            //     customer.cancelaccept(data,conn,userName);
+            //     System.out.println(&quot;Bye&quot;);
+            //     return;
+            // }
+<span class="nc" id="L85">            data.addCurrentUser(conn, userName);</span>
+<span class="nc" id="L86">            System.out.println(&quot;Enter password&quot;);  </span>
+            // read and hide user password
+<span class="nc" id="L88">            String password = sc.nextLine();// read user password</span>
+            // if(password.equals(&quot;cancel&quot;)){
+            //     customer.cancelaccept(data,conn,password);
+            //     System.out.println(&quot;Bye&quot;);
+            //     return;
+            // }
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (data.checkexistancevaliduser(userName, password)==1) {</span>
+<span class="nc" id="L95">                String userType = data.getUsertype(userName, password);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                if (userType.equals(&quot;seller&quot;)) {</span>
+<span class="nc" id="L97">                    System.out.println(&quot;login Successful&quot;+userName);</span>
+<span class="nc" id="L98">                    System.out.println(&quot;choose your option&quot;);                    </span>
+                    while (true) {
+<span class="nc" id="L100">                        System.out.println(&quot;modify: products, get: current or sold, quit&quot;);</span>
+<span class="nc" id="L101">                        String choiceseller = sc.nextLine();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">                        if(choiceseller.equals(&quot;modify&quot;)) {</span>
+                            // Enter productcode, productname, producttype, productnumber and productprice in order
+<span class="nc" id="L104">                            System.out.println(&quot;Enter product code:&quot;);</span>
+<span class="nc" id="L105">                            String productcode = sc.nextLine();</span>
+<span class="nc" id="L106">                            System.out.println(&quot;Enter product name:&quot;);</span>
+<span class="nc" id="L107">                            String productname = sc.nextLine();</span>
+<span class="nc" id="L108">                            System.out.println(&quot;Enter product type:&quot;);</span>
+<span class="nc" id="L109">                            String producttype = sc.nextLine();</span>
+<span class="nc" id="L110">                            System.out.println(&quot;Enter product number:&quot;);</span>
+<span class="nc" id="L111">                            String productnumber = sc.nextLine();</span>
+<span class="nc" id="L112">                            System.out.println(&quot;Enter product price:&quot;);</span>
+<span class="nc" id="L113">                            String productprice = sc.nextLine();</span>
+<span class="nc" id="L114">                            seller.addP(productcode, productname, producttype, productnumber, productprice, data, conn);</span>
+<span class="nc" id="L115">                            System.out.println(&quot;modify: products, get: current or sold, quit&quot;);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                        } else if (choiceseller.equals(&quot;get current&quot;)) {</span>
+<span class="nc" id="L117">                            seller.getCurrentAvailable(data, conn);</span>
+<span class="nc" id="L118">                            System.out.println(&quot;Already got current available list.&quot;);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                        } else if (choiceseller.equals(&quot;get sold&quot;)) {</span>
+<span class="nc" id="L120">                            seller.getSoldReport(data, conn);</span>
+<span class="nc" id="L121">                            System.out.println(&quot;Already got sold report.&quot;);</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                        } else if (choiceseller.equals(&quot;quit&quot;)) {</span>
+<span class="nc" id="L123">                            System.out.println(&quot;See you next time!&quot;);</span>
+<span class="nc" id="L124">                            break;</span>
+                        } else {
+<span class="nc" id="L126">                            System.out.println(&quot;You entered wrong charactor, please try again.&quot;);</span>
+                        }
+<span class="nc" id="L128">                    }        </span>
+
+<span class="nc bnc" id="L130" title="All 2 branches missed.">                } else if(userType.equals(&quot;owner&quot;)){</span>
+<span class="nc" id="L131">                    System.out.println(&quot;login Successful &quot;+userName);</span>
+<span class="nc" id="L132">                    System.out.println(&quot;choose your option&quot;);</span>
+<span class="nc" id="L133">                    System.out.println(&quot;change: user, modify: changes or product, get: canceled transcrip or roles list&quot;);</span>
+<span class="nc" id="L134">                    String choiceowner = sc.nextLine();</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                    if(choiceowner.equals(&quot;change&quot;)){</span>
+<span class="nc" id="L136">                        System.out.println(&quot;Add user or Delete user&quot;);</span>
+<span class="nc" id="L137">                        owner.changeUser(data,conn);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                    }else if(choiceowner.equals(&quot;modify changes&quot;)){</span>
+<span class="nc" id="L139">                        owner.modifyChanges(data,conn);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">                    }else if(choiceowner.equals(&quot;get cancel&quot;)){</span>
+<span class="nc" id="L141">                        owner.getCanceltranscript(data,conn);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                    }else if(choiceowner.equals(&quot;modify product&quot;)){</span>
+<span class="nc" id="L143">                        owner.modifyProduct(data,conn);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                    }else if(choiceowner.equals(&quot;get roles&quot;)){</span>
+<span class="nc" id="L145">                        System.out.println(owner.getRoles(data,conn));</span>
+                    }
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                } else if(userType.equals(&quot;cashier&quot;)){</span>
+<span class="nc" id="L149">                    System.out.println(&quot;login Successful&quot;+userName);</span>
+<span class="nc" id="L150">                    System.out.println(&quot;choose your option&quot;);</span>
+<span class="nc" id="L151">                    System.out.println(&quot;Display current change, Show transaction history&quot;);</span>
+<span class="nc" id="L152">                    String choicecashier = sc.nextLine();</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                    if(choicecashier.equals(&quot;Display current change&quot;)){</span>
+<span class="nc" id="L154">                        cashier.displayChange();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                    }else if(choicecashier.equals(&quot;Show transaction history&quot;)){</span>
+<span class="nc" id="L156">                        System.out.println(cashier.getTransactionHistoyr());</span>
+                    }
+
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                }else if(userType.equals(&quot;customer&quot;)){</span>
+<span class="nc" id="L160">                    System.out.println(&quot;login Successful &quot;+userName);</span>
+<span class="nc" id="L161">                    System.out.println(&quot;Here is your recent Transaction Records: &quot;);</span>
+<span class="nc" id="L162">                    ArrayList rs1=data.getSoldname(userName);</span>
+<span class="nc" id="L163">                    ResultSet rs=data.getProductData();</span>
+                    //System.out.println(data.getProductNumber(&quot;milk&quot;));
+<span class="nc" id="L165">                    System.out.println(rs1);</span>
+<span class="nc" id="L166">                    System.out.println(&quot;Displaying product list ...&quot;);</span>
+                    //System.out.println(data.getProductNumber(&quot;milk&quot;));
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                    while (rs.next()) {</span>
+<span class="nc" id="L169">                        String productcode = rs.getString(&quot;productcode&quot;);</span>
+<span class="nc" id="L170">                        String productname = rs.getString(&quot;productname&quot;);</span>
+<span class="nc" id="L171">                        String producttype = rs.getString(&quot;producttype&quot;);</span>
+<span class="nc" id="L172">                        String productnumber = rs.getString(&quot;productnumber&quot;);</span>
+<span class="nc" id="L173">                        String productprice = rs.getString(&quot;productprice&quot;);</span>
+<span class="nc" id="L174">                        System.out.println(productcode+&quot;\t&quot;+productname+&quot;\t&quot;+producttype+&quot;\t&quot;+productnumber+&quot;\t&quot;+productprice);</span>
+<span class="nc" id="L175">                    }</span>
+<span class="nc" id="L176">                    System.out.println(&quot;please type the product type to buy product&quot;);</span>
+                    
+                    // timer
+<span class="nc" id="L179">                    lastActiveTime = new Date();</span>
+<span class="nc" id="L180">                    Timerresult = true;</span>
+
+<span class="nc" id="L182">                    String ppname = sc.nextLine();</span>
+
+
+<span class="nc" id="L185">                    Timerresult = timer.run(lastActiveTime,ppname);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">                    if(Timerresult == false){</span>
+<span class="nc" id="L187">                        return;</span>
+                    }
+                    // timer end
+
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                    if(ppname.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L192">                        customer.cancelaccept(data,conn,ppname);</span>
+<span class="nc" id="L193">                        System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L194">                        return;</span>
+                    }
+<span class="nc" id="L196">                    String result_ppname = customer.buyProduct(ppname, data, conn);</span>
+<span class="nc" id="L197">                    itemsold = result_ppname;</span>
+                    
+<span class="nc" id="L199">                    boolean flag1 = customer.getflag1();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                    if(flag1){</span>
+<span class="nc" id="L201">                        System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L202">                        return;</span>
+                    }else{
+<span class="nc" id="L204">                        double cash_sum = calculatePayment.ask_cashInput(data,conn);     </span>
+<span class="nc" id="L205">                        moneypaid = Double.toString(cash_sum);</span>
+                        
+<span class="nc" id="L207">                        boolean flag = calculatePayment.getflag();</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">                        if(flag){</span>
+<span class="nc" id="L209">                            return;</span>
+                        }else{
+<span class="nc" id="L211">                            data.addSoldname(conn, userName, result_ppname);</span>
+<span class="nc" id="L212">                            String price = data.getProductprice(result_ppname);</span>
+<span class="nc" id="L213">                            cash_sum = cash_sum - Double.valueOf(price);</span>
+<span class="nc" id="L214">                            returnedchange = Double.toString(cash_sum);</span>
+<span class="nc" id="L215">                            cash_used_list = calculatePayment.Calculate_Payment(result_ppname,cash_sum, conn, data);</span>
+<span class="nc" id="L216">                            System.out.println(cash_used_list);                    </span>
+<span class="nc" id="L217">                            boolean flag2 = calculatePayment.getflag2();</span>
+<span class="nc" id="L218">                            System.out.println(flag2);</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                            if(flag2){</span>
+<span class="nc" id="L220">                                return;</span>
+                            }else{
+<span class="nc" id="L222">                                String soldcode = data.getSoldCode(result_ppname);</span>
+<span class="nc" id="L223">                                String datee = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).format(new Date());</span>
+<span class="nc" id="L224">                                String soldnumber = data.getSoldNumber(result_ppname);</span>
+<span class="nc" id="L225">                                String productnumber_string = data.getProductNumber(result_ppname);</span>
+<span class="nc" id="L226">                                String productprice = data.getProductprice(result_ppname);</span>
+<span class="nc" id="L227">                                calculatePayment.reduce_number_database(cash_used_list, conn, data);</span>
+<span class="nc" id="L228">                                seller.addToSold(soldcode, result_ppname, ppname, soldnumber, productnumber_string, productprice, data, conn);</span>
+<span class="nc" id="L229">                                data.addTransaction(conn, datee, itemsold, moneypaid, returnedchange, paymentmethod);</span>
+                                while (true) {
+<span class="nc" id="L231">                                    System.out.println(&quot;buy: buy again; quit&quot;);</span>
+<span class="nc" id="L232">                                    String c1 = sc.nextLine();</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">                                    if (c1.equals(&quot;buy&quot;)) {</span>
+<span class="nc" id="L234">                                        break;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                                    } else if (c1.equals(&quot;quit&quot;)) {</span>
+<span class="nc" id="L236">                                        System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L237">                                        return; </span>
+                                    } else {
+<span class="nc" id="L239">                                        System.out.println(&quot;Wrong charactor, try again please.&quot;);</span>
+                                    }
+<span class="nc" id="L241">                                }</span>
+                            }
+                        }
+                        
+                    }
+<span class="nc" id="L246">                }else{</span>
+<span class="nc" id="L247">                    System.out.println(&quot;incorrect password or username&quot;);</span>
+                }}
+                    
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        }else if(choice.equals(&quot;b&quot;)){</span>
+<span class="nc" id="L251">                System.out.println(&quot;Enter username&quot;);</span>
+<span class="nc" id="L252">                String userName = sc.nextLine();  // Read user input</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                if(userName.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L254">                    customer.cancelaccept(data,conn,userName);</span>
+<span class="nc" id="L255">                    System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L256">                    return;</span>
+                }
+<span class="nc" id="L258">                System.out.println(&quot;Enter password&quot;);  </span>
+<span class="nc" id="L259">                String password = sc.nextLine();// read user password</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">                if(password.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L261">                    customer.cancelaccept(data,conn,password);</span>
+<span class="nc" id="L262">                    System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L263">                    return;</span>
+                }
+<span class="nc" id="L265">                boolean result = data.addUser(conn, userName,&quot;customer&quot;, password);</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">                if(result == false){</span>
+<span class="nc" id="L267">                    System.out.print(&quot;The username already exist&quot;);</span>
+                }else{
+<span class="nc" id="L269">                    System.out.println(&quot;SingupSuccessful&quot;);</span>
+<span class="nc" id="L270">                    System.out.println(&quot;Displaying product list ...&quot;);</span>
+<span class="nc" id="L271">                    ResultSet rs=data.getProductData();</span>
+                    //System.out.println(data.getProductNumber(&quot;milk&quot;));
+<span class="nc bnc" id="L273" title="All 2 branches missed.">                    while (rs.next()) {</span>
+<span class="nc" id="L274">                        String productcode = rs.getString(&quot;productcode&quot;);</span>
+<span class="nc" id="L275">                        String productname = rs.getString(&quot;productname&quot;);</span>
+<span class="nc" id="L276">                        String producttype = rs.getString(&quot;producttype&quot;);</span>
+<span class="nc" id="L277">                        String productnumber = rs.getString(&quot;productnumber&quot;);</span>
+<span class="nc" id="L278">                        String productprice = rs.getString(&quot;productprice&quot;);</span>
+<span class="nc" id="L279">                        System.out.println(productcode+&quot;\t&quot;+productname+&quot;\t&quot;+producttype+&quot;\t&quot;+productnumber+&quot;\t&quot;+productprice);</span>
+<span class="nc" id="L280">                    }</span>
+<span class="nc" id="L281">                    System.out.println(&quot;please type the product type to buy product&quot;);</span>
+                    // timer
+<span class="nc" id="L283">                    lastActiveTime = new Date();</span>
+<span class="nc" id="L284">                    Timerresult = true;</span>
+                    
+<span class="nc" id="L286">                    String ppname = sc.nextLine();</span>
+                    
+<span class="nc" id="L288">                    Timerresult = timer.run(lastActiveTime,ppname);</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">                    if(Timerresult == false){</span>
+<span class="nc" id="L290">                        return;</span>
+                    }
+                    // timer end
+<span class="nc bnc" id="L293" title="All 2 branches missed.">                    if(ppname.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L294">                        customer.cancelaccept(data,conn,ppname);</span>
+<span class="nc" id="L295">                        System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L296">                        return;</span>
+                    }
+<span class="nc" id="L298">                    String result_ppname = customer.buyProduct(ppname, data, conn);</span>
+<span class="nc" id="L299">                    itemsold = result_ppname;</span>
+<span class="nc" id="L300">                    boolean flag1 = customer.getflag1();</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">                    if(flag1){</span>
+<span class="nc" id="L302">                        System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L303">                        return;</span>
+                    }else{
+<span class="nc" id="L305">                        double cash_sum = calculatePayment.ask_cashInput(data,conn); </span>
+<span class="nc" id="L306">                        moneypaid = Double.toString(cash_sum);                 </span>
+                     
+<span class="nc" id="L308">                        boolean flag = calculatePayment.getflag();</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                        if(flag){</span>
+<span class="nc" id="L310">                            return;</span>
+                        }else{
+<span class="nc" id="L312">                            System.out.println(result_ppname);</span>
+<span class="nc" id="L313">                            System.out.println(cash_sum);</span>
+<span class="nc" id="L314">                            String price = data.getProductprice(result_ppname);</span>
+<span class="nc" id="L315">                            cash_sum = cash_sum - Double.valueOf(price);</span>
+<span class="nc" id="L316">                            returnedchange = Double.toString(cash_sum);</span>
+<span class="nc" id="L317">                            cash_used_list = calculatePayment.Calculate_Payment(result_ppname,cash_sum, conn, data);</span>
+<span class="nc" id="L318">                            boolean flag2 = calculatePayment.getflag2();</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">                            if(flag2){</span>
+<span class="nc" id="L320">                                return;</span>
+                            }else{
+<span class="nc" id="L322">                                String datee = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).format(new Date());</span>
+<span class="nc" id="L323">                                calculatePayment.reduce_number_database(cash_used_list, conn, data);</span>
+<span class="nc" id="L324">                                String soldcode = data.getSoldCode(result_ppname);</span>
+<span class="nc" id="L325">                                String soldnumber = data.getSoldNumber(result_ppname);</span>
+<span class="nc" id="L326">                                String productnumber_string = data.getProductNumber(result_ppname);</span>
+<span class="nc" id="L327">                                String productprice = data.getProductprice(result_ppname);</span>
+<span class="nc" id="L328">                                seller.addToSold(soldcode, result_ppname, ppname, soldnumber, productnumber_string, productprice, data, conn);</span>
+<span class="nc" id="L329">                                data.addTransaction(conn, datee, itemsold, moneypaid, returnedchange, paymentmethod);</span>
+                                while (true) {
+<span class="nc" id="L331">                                    System.out.println(&quot;buy: buy again; quit&quot;);</span>
+<span class="nc" id="L332">                                    String c1 = sc.nextLine();</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">                                    if (c1.equals(&quot;buy&quot;)) {</span>
+<span class="nc" id="L334">                                        break;</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">                                    } else if (c1.equals(&quot;quit&quot;)) {</span>
+<span class="nc" id="L336">                                        System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L337">                                        return; </span>
+                                    } else {
+<span class="nc" id="L339">                                        System.out.println(&quot;Wrong charactor, try again please.&quot;);</span>
+                                    }
+<span class="nc" id="L341">                                }</span>
+                            }
+                            
+                        }
+                        
+                        
+                    }}
+<span class="nc" id="L348">        }else{</span>
+<span class="nc" id="L349">            System.out.print(&quot;You entered wrong charactor&quot;);</span>
+        }
+
+
+
+        // boolean signUpresult = signUp.customer_sign_up(userName, password);
+        // System.out.println(signUpresult);
+<span class="nc" id="L356">        }</span>
+    }
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

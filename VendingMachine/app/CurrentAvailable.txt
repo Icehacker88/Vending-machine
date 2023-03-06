@@ -1,0 +1,24 @@
+[productcode]	[productname]	[producttype]	[productnumber]	[productprice]
+<<<<<<< HEAD
+002		smiths		chips		5		20
+003		mentos		candies		5		30
+004		milk chocolate		chocolates		5		40
+milk		001		drink		5		10
+=======
+007		Mineral Water		drinks		7		8
+008		Sprite		drinks		7		8
+010		Mars		chocolates		7		15
+011		M&M		chocolates		7		20
+012		Bounty		chocolates		7		20
+013		Snickers		chocolates		7		20
+014		Mentos		candies		7		40
+015		Sour Patch		candies		7		35
+016		Skittles		candies		7		25
+002		Pringles		chips		7		15
+003		Kettle		chips		7		20
+004		Thins		chips		7		20
+009		Juice		drinks		4		12
+>>>>>>> 2d54336492695065c0b0d8bd388098209cff546e
+001		milk		drinks		3		6
+006		Pepsi		chips		7		10
+005		cola		drinks		5		20

@@ -1,0 +1,21 @@
+[soldcode]	[soldname]	[soldnumber]
+<<<<<<< HEAD
+002	milk	1
+=======
+002	Pringles	0
+001	Smiths	0
+003	Kettle	0
+007	Mineral Water	0
+008	Sprite	0
+010	Mars	0
+011	M&M	0
+012	Bounty	0
+013	Snickers	0
+014	Mentos	0
+015	Sour Patch	0
+016	Skittles	0
+004	Thins	0
+009	Juice	3
+>>>>>>> 2d54336492695065c0b0d8bd388098209cff546e
+006	Pepsi	0
+005	Coca cola	0

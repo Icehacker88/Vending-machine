@@ -1,0 +1,5 @@
+owner1 123 owner
+seller1 234 seller
+cashier1 345 cashier
+customer1 456 customer
+customer2 123 customer

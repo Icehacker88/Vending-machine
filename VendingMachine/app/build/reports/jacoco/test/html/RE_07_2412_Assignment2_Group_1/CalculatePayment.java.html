@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CalculatePayment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">RE_07_2412_Assignment2_Group_1</a> &gt; <span class="el_source">CalculatePayment.java</span></div><h1>CalculatePayment.java</h1><pre class="source lang-java linenums">package RE_07_2412_Assignment2_Group_1;
+
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.xml.crypto.Data;
+
+<span class="nc" id="L11">public class CalculatePayment {</span>
+<span class="nc" id="L12">    boolean flag = false;</span>
+<span class="nc" id="L13">    boolean flag2 = false;</span>
+<span class="nc" id="L14">    Customer customer = new Customer();</span>
+    private static Connection conn;
+<span class="nc" id="L16">    private static Database data = new Database();</span>
+<span class="nc" id="L17">    private static Timer timer = new Timer();</span>
+    public double ask_cashInput(Database data,Connection conn)throws SQLException{
+<span class="nc" id="L19">        double sum = 0;</span>
+<span class="nc" id="L20">        Scanner sc = new Scanner(System.in);  // Create a Scanner object</span>
+<span class="nc" id="L21">        System.out.println(&quot;Please type your cash number.&quot;);</span>
+<span class="nc" id="L22">        System.out.println(&quot;100 dollar:&quot;);</span>
+<span class="nc" id="L23">        String hundred_dollar = sc.nextLine();</span>
+
+<span class="nc" id="L25">        Date lastActiveTime = new Date();</span>
+<span class="nc" id="L26">        boolean result = true;</span>
+
+<span class="nc" id="L28">        result = timer.run(lastActiveTime,hundred_dollar);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L30">            flag = true;</span>
+<span class="nc" id="L31">            return 0;</span>
+        }
+
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if(hundred_dollar.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L36">            customer.cancelaccept(data,conn,hundred_dollar);</span>
+<span class="nc" id="L37">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L38">            flag =true;</span>
+<span class="nc" id="L39">            return 0;</span>
+        }
+<span class="nc" id="L41">        sum +=Double.parseDouble(hundred_dollar)*100;</span>
+<span class="nc" id="L42">        System.out.println(&quot;50 dollar:&quot;);</span>
+<span class="nc" id="L43">        String fifty_dollar = sc.nextLine();</span>
+<span class="nc" id="L44">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L46">        result = timer.run(lastActiveTime,fifty_dollar);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L48">            flag = true;</span>
+<span class="nc" id="L49">            return sum;</span>
+        }
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(fifty_dollar.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L53">            customer.cancelaccept(data,conn,fifty_dollar);</span>
+            //end
+<span class="nc" id="L55">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L56">            flag = true;</span>
+<span class="nc" id="L57">            return sum;</span>
+        }
+<span class="nc" id="L59">        sum +=Double.parseDouble(fifty_dollar)*50;</span>
+<span class="nc" id="L60">        System.out.println(&quot;20 dollar:&quot;);</span>
+<span class="nc" id="L61">        String twenty_dollar = sc.nextLine();</span>
+<span class="nc" id="L62">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L64">        result = timer.run(lastActiveTime,twenty_dollar);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L66">            flag = true;</span>
+<span class="nc" id="L67">            return 0;</span>
+        }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if(twenty_dollar.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L71">            customer.cancelaccept(data,conn,twenty_dollar);</span>
+            //end
+<span class="nc" id="L73">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L74">            flag = true;</span>
+<span class="nc" id="L75">            return sum;</span>
+        }
+<span class="nc" id="L77">        sum +=Double.parseDouble(twenty_dollar)*20;</span>
+<span class="nc" id="L78">        System.out.println(&quot;10 dollar:&quot;);</span>
+<span class="nc" id="L79">        String ten_dollar = sc.nextLine();</span>
+<span class="nc" id="L80">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L82">        result = timer.run(lastActiveTime,ten_dollar);</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L84">            flag = true;</span>
+<span class="nc" id="L85">            return 0;</span>
+        }
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if(ten_dollar.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L89">            customer.cancelaccept(data,conn,ten_dollar);</span>
+            //end
+<span class="nc" id="L91">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L92">            flag = true;</span>
+<span class="nc" id="L93">            return sum;</span>
+        }
+<span class="nc" id="L95">        sum +=Double.parseDouble(ten_dollar)*10;</span>
+<span class="nc" id="L96">        System.out.println(&quot;5 dollar:&quot;);</span>
+<span class="nc" id="L97">        String five_dollar = sc.nextLine();</span>
+<span class="nc" id="L98">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L100">        result = timer.run(lastActiveTime,five_dollar);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L102">            flag = true;</span>
+<span class="nc" id="L103">            return 0;</span>
+        }
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if(five_dollar.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L107">            customer.cancelaccept(data,conn,five_dollar);</span>
+            //end
+<span class="nc" id="L109">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L110">            flag = true;</span>
+<span class="nc" id="L111">            return sum;</span>
+        }
+<span class="nc" id="L113">        sum +=Double.parseDouble(five_dollar)*5;</span>
+<span class="nc" id="L114">        System.out.println(&quot;2 dollar:&quot;);</span>
+<span class="nc" id="L115">        String two_dollar = sc.nextLine();</span>
+<span class="nc" id="L116">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L118">        result = timer.run(lastActiveTime,two_dollar);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L120">            flag = true;</span>
+<span class="nc" id="L121">            return 0;</span>
+        }
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if(two_dollar.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L125">            customer.cancelaccept(data,conn,two_dollar);</span>
+            //end
+<span class="nc" id="L127">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L128">            flag = true;</span>
+<span class="nc" id="L129">            return sum;</span>
+        }
+<span class="nc" id="L131">        sum +=Double.parseDouble(two_dollar)*2;</span>
+<span class="nc" id="L132">        System.out.println(&quot;1 dollar:&quot;);</span>
+<span class="nc" id="L133">        String one_dollar = sc.nextLine();</span>
+<span class="nc" id="L134">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L136">        result = timer.run(lastActiveTime,one_dollar);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L138">            flag = true;</span>
+<span class="nc" id="L139">            return 0;</span>
+        }
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if(one_dollar.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L143">            customer.cancelaccept(data,conn,one_dollar);</span>
+            //end
+<span class="nc" id="L145">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L146">            flag = true;</span>
+<span class="nc" id="L147">            return sum;</span>
+        }
+<span class="nc" id="L149">        sum +=Double.parseDouble(one_dollar)*1;</span>
+<span class="nc" id="L150">        System.out.println(&quot;50 cent:&quot;);</span>
+<span class="nc" id="L151">        String fifty_cent = sc.nextLine();</span>
+<span class="nc" id="L152">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L154">        result = timer.run(lastActiveTime,fifty_cent);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L156">            flag = true;</span>
+<span class="nc" id="L157">            return 0;</span>
+        }
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if(fifty_cent.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L161">            customer.cancelaccept(data,conn,fifty_cent);</span>
+            //end
+<span class="nc" id="L163">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L164">            flag = true;</span>
+<span class="nc" id="L165">            return sum;</span>
+        }
+<span class="nc" id="L167">        sum +=Double.parseDouble(fifty_cent)*0.5;</span>
+<span class="nc" id="L168">        System.out.println(&quot;20 cent:&quot;);</span>
+<span class="nc" id="L169">        String twenty_cent = sc.nextLine();</span>
+<span class="nc" id="L170">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L172">        result = timer.run(lastActiveTime,twenty_cent);</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L174">            flag = true;</span>
+<span class="nc" id="L175">            return 0;</span>
+        }
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        if(twenty_cent.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L179">            customer.cancelaccept(data,conn,twenty_cent);</span>
+            //end
+<span class="nc" id="L181">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L182">            flag = true;</span>
+<span class="nc" id="L183">            return sum;</span>
+        }
+<span class="nc" id="L185">        sum +=Double.parseDouble(twenty_cent)*0.2;</span>
+<span class="nc" id="L186">        System.out.println(&quot;10 cent:&quot;);</span>
+<span class="nc" id="L187">        String ten_cent = sc.nextLine();</span>
+<span class="nc" id="L188">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L190">        result = timer.run(lastActiveTime,ten_cent);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L192">            flag = true;</span>
+<span class="nc" id="L193">            return 0;</span>
+        }
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if(ten_cent.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L197">            customer.cancelaccept(data,conn,ten_cent);</span>
+            //end
+<span class="nc" id="L199">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L200">            flag = true;</span>
+<span class="nc" id="L201">            return sum;</span>
+        }
+<span class="nc" id="L203">        sum +=Double.parseDouble(ten_cent)*0.1;</span>
+<span class="nc" id="L204">        System.out.println(&quot;5 cent:&quot;);</span>
+<span class="nc" id="L205">        String five_cent = sc.nextLine();</span>
+<span class="nc" id="L206">        lastActiveTime = new Date();</span>
+
+<span class="nc" id="L208">        result = timer.run(lastActiveTime,five_cent);</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        if(result == false){</span>
+<span class="nc" id="L210">            flag = true;</span>
+<span class="nc" id="L211">            return 0;</span>
+        }
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        if(five_cent.equals(&quot;cancel&quot;)){</span>
+            //add the canceled trascript
+<span class="nc" id="L215">            customer.cancelaccept(data,conn,five_cent);</span>
+            //end
+<span class="nc" id="L217">            System.out.println(&quot;Bye&quot;);</span>
+<span class="nc" id="L218">            flag = true;</span>
+<span class="nc" id="L219">            return sum;</span>
+        }
+<span class="nc" id="L221">        sum +=Double.parseDouble(five_cent)*0.05;</span>
+<span class="nc" id="L222">        return sum;</span>
+    }
+    
+
+    public ArrayList&lt;Integer&gt; Calculate_Payment(String ProductName, double CustomerPay,Connection conn,Database data) throws NumberFormatException, SQLException {
+<span class="nc" id="L227">        ArrayList&lt;Integer&gt; result_list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L228">        double remain = CustomerPay;</span>
+<span class="nc" id="L229">        int five_cent_count = 0;</span>
+<span class="nc" id="L230">        int ten_cent_count = 0;</span>
+<span class="nc" id="L231">        int twenty_cent_count = 0;</span>
+<span class="nc" id="L232">        int fifty_cent_count = 0;</span>
+<span class="nc" id="L233">        int one_dollar_count = 0;</span>
+<span class="nc" id="L234">        int two_dollar_count = 0;</span>
+<span class="nc" id="L235">        int five_dollar_count = 0;</span>
+<span class="nc" id="L236">        int ten_dollar_count = 0;</span>
+<span class="nc" id="L237">        int twenty_dollar_count = 0;</span>
+<span class="nc" id="L238">        int twenty_dollar_store = Integer.parseInt(data.getCashnumber(&quot;20dollar&quot;));</span>
+<span class="nc" id="L239">        int ten_dollar_store = Integer.parseInt(data.getCashnumber(&quot;10dollar&quot;));</span>
+<span class="nc" id="L240">        int five_dollar_store = Integer.parseInt(data.getCashnumber(&quot;5dollar&quot;));</span>
+<span class="nc" id="L241">        int two_dollar_store = Integer.parseInt(data.getCashnumber(&quot;2dollar&quot;));</span>
+<span class="nc" id="L242">        int one_dollar_store = Integer.parseInt(data.getCashnumber(&quot;1dollar&quot;));</span>
+<span class="nc" id="L243">        int fifty_cent_store = Integer.parseInt(data.getCashnumber(&quot;50cent&quot;));</span>
+<span class="nc" id="L244">        int twenty_cent_store = Integer.parseInt(data.getCashnumber(&quot;20cent&quot;));</span>
+<span class="nc" id="L245">        int ten_cent_store = Integer.parseInt(data.getCashnumber(&quot;10cent&quot;));</span>
+<span class="nc" id="L246">        int five_cent_store = Integer.parseInt(data.getCashnumber(&quot;5cent&quot;));</span>
+<span class="nc" id="L247">        double sum = twenty_dollar_store*20+ten_dollar_store*10+five_dollar_store*5+two_dollar_store*2+one_dollar_store*1+fifty_cent_store*0.5+twenty_cent_store*0.2+ten_cent_store*0.1+five_cent_store*0.05;</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        if(remain&gt;sum){</span>
+<span class="nc" id="L249">            System.out.println(&quot;Change is not enough.&quot;);</span>
+<span class="nc" id="L250">            flag2 = true;</span>
+<span class="nc" id="L251">            return result_list;</span>
+        }
+<span class="nc bnc" id="L253" title="All 2 branches missed.">        while(remain&gt;0){</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            if((remain/20)&gt;=1){</span>
+<span class="nc" id="L255">                twenty_dollar_count = (int) ((remain-(remain%20))/20);</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                if(twenty_dollar_store&lt;twenty_dollar_count){</span>
+<span class="nc" id="L257">                    twenty_dollar_count = twenty_dollar_store;</span>
+<span class="nc" id="L258">                    remain = remain -twenty_dollar_count*20;</span>
+                }
+                else{
+<span class="nc" id="L261">                    remain = remain%20;</span>
+                }
+            }
+<span class="nc bnc" id="L264" title="All 2 branches missed.">            if((remain/10)&gt;=1){</span>
+<span class="nc" id="L265">                ten_dollar_count = (int) ((remain-(remain%10))/10);</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">                if(ten_dollar_store&lt;ten_dollar_count){</span>
+<span class="nc" id="L267">                    ten_dollar_count = ten_dollar_store;</span>
+<span class="nc" id="L268">                    remain = remain -ten_dollar_count*10;</span>
+                }
+                else{
+<span class="nc" id="L271">                    remain = remain%10;</span>
+                }
+            }
+<span class="nc bnc" id="L274" title="All 2 branches missed.">            if((remain/5)&gt;=1){</span>
+<span class="nc" id="L275">                five_dollar_count = (int) ((remain-(remain%5))/5);</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">                if(five_dollar_store&lt;five_dollar_count){</span>
+<span class="nc" id="L277">                    five_dollar_count = five_dollar_store;</span>
+<span class="nc" id="L278">                    remain = remain -five_dollar_count*5;</span>
+                }
+                else{
+<span class="nc" id="L281">                    remain = remain%5;</span>
+                }
+            }
+<span class="nc bnc" id="L284" title="All 2 branches missed.">            if((remain/2)&gt;=1){</span>
+<span class="nc" id="L285">                two_dollar_count = (int) ((remain-(remain%2))/2);</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">                if(two_dollar_store&lt;two_dollar_count){</span>
+<span class="nc" id="L287">                    two_dollar_count = two_dollar_store;</span>
+<span class="nc" id="L288">                    remain = remain -two_dollar_count*2;</span>
+                }
+                else{
+<span class="nc" id="L291">                    remain = remain%2;</span>
+                }
+            }
+<span class="nc bnc" id="L294" title="All 2 branches missed.">            if((remain/1)&gt;=1){</span>
+<span class="nc" id="L295">                one_dollar_count = (int) ((remain-(remain%1))/1);</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">                if(one_dollar_store&lt;one_dollar_count){</span>
+<span class="nc" id="L297">                    one_dollar_count = one_dollar_store;</span>
+<span class="nc" id="L298">                    remain = remain -one_dollar_count*1;</span>
+                }
+                else{
+<span class="nc" id="L301">                    remain = remain%1;</span>
+                }
+            }
+<span class="nc bnc" id="L304" title="All 2 branches missed.">            if((remain/0.5)&gt;=1){</span>
+<span class="nc" id="L305">                fifty_cent_count = (int) ((remain-(remain%0.5))/0.5);</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">                if(fifty_cent_store&lt;fifty_cent_count){</span>
+<span class="nc" id="L307">                    fifty_cent_count = fifty_cent_store;</span>
+<span class="nc" id="L308">                    remain = remain -fifty_cent_count*0.5;</span>
+                }
+                else{
+<span class="nc" id="L311">                    remain = remain%0.5;</span>
+                }
+            }
+<span class="nc bnc" id="L314" title="All 2 branches missed.">            if((remain/0.2)&gt;=1){</span>
+<span class="nc" id="L315">                twenty_cent_count = (int) ((remain-(remain%0.2))/0.2);</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">                if(twenty_cent_store&lt;twenty_cent_count){</span>
+<span class="nc" id="L317">                    twenty_cent_count = twenty_cent_store;</span>
+<span class="nc" id="L318">                    remain = remain -twenty_cent_count*0.2;</span>
+                }
+                else{
+<span class="nc" id="L321">                    remain = remain%0.2;</span>
+                }
+            }
+<span class="nc bnc" id="L324" title="All 2 branches missed.">            if((remain/0.1)&gt;=1){</span>
+<span class="nc" id="L325">                ten_cent_count = (int) ((remain-(remain%0.1))/0.1);</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">                if(ten_cent_store&lt;ten_cent_count){</span>
+<span class="nc" id="L327">                    ten_cent_count = ten_cent_store;</span>
+<span class="nc" id="L328">                    remain = remain -ten_cent_count*0.1;</span>
+                }
+                else{
+<span class="nc" id="L331">                    remain = remain%0.1;</span>
+                }
+            }
+<span class="nc bnc" id="L334" title="All 2 branches missed.">            if((remain/0.05)&gt;=1){</span>
+<span class="nc" id="L335">                five_cent_count = (int) ((remain-(remain%0.05))/0.05);</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">                if(five_cent_store&lt;five_cent_count){</span>
+<span class="nc" id="L337">                    five_cent_count = five_cent_store;</span>
+<span class="nc" id="L338">                    remain = remain -five_cent_count*0.05;</span>
+                }
+                else{
+<span class="nc" id="L341">                    remain = remain%0.05;</span>
+                }
+            }
+        }
+
+<span class="nc" id="L346">        result_list.add(0,twenty_dollar_count);</span>
+<span class="nc" id="L347">        result_list.add(1,ten_dollar_count);</span>
+<span class="nc" id="L348">        result_list.add(2,five_dollar_count);</span>
+<span class="nc" id="L349">        result_list.add(3,two_dollar_count);</span>
+<span class="nc" id="L350">        result_list.add(4,one_dollar_count);</span>
+<span class="nc" id="L351">        result_list.add(5,fifty_cent_count);</span>
+<span class="nc" id="L352">        result_list.add(6,twenty_cent_count);</span>
+<span class="nc" id="L353">        result_list.add(7,ten_cent_count);</span>
+<span class="nc" id="L354">        result_list.add(8,five_cent_count);</span>
+    
+<span class="nc" id="L356">        return result_list;</span>
+    }
+
+    public boolean reduce_number_database(ArrayList&lt;Integer&gt; list, Connection conn, Database data) throws SQLException{
+
+<span class="nc" id="L361">        int twenty_dollar = Integer.parseInt(data.getCashnumber(&quot;20dollar&quot;));</span>
+<span class="nc" id="L362">        twenty_dollar = twenty_dollar-list.get(0);</span>
+<span class="nc" id="L363">        data.addCash_exist(conn,&quot;20dollar&quot;,String.valueOf(twenty_dollar));</span>
+
+<span class="nc" id="L365">        int ten_dollar = Integer.parseInt(data.getCashnumber(&quot;10dollar&quot;));</span>
+<span class="nc" id="L366">        ten_dollar = ten_dollar-list.get(1);</span>
+<span class="nc" id="L367">        data.addCash_exist(conn,&quot;10dollar&quot;,String.valueOf(ten_dollar));</span>
+
+<span class="nc" id="L369">        int five_dollar = Integer.parseInt(data.getCashnumber(&quot;5dollar&quot;));</span>
+<span class="nc" id="L370">        five_dollar = five_dollar-list.get(2);</span>
+<span class="nc" id="L371">        data.addCash_exist(conn,&quot;5dollar&quot;,String.valueOf(five_dollar));</span>
+
+<span class="nc" id="L373">        int two_dollar = Integer.parseInt(data.getCashnumber(&quot;2dollar&quot;));</span>
+<span class="nc" id="L374">        two_dollar = two_dollar-list.get(3);</span>
+<span class="nc" id="L375">        data.addCash_exist(conn,&quot;2dollar&quot;,String.valueOf(two_dollar));</span>
+
+<span class="nc" id="L377">        int one_dollar = Integer.parseInt(data.getCashnumber(&quot;1dollar&quot;));</span>
+<span class="nc" id="L378">        one_dollar = one_dollar-list.get(4);</span>
+<span class="nc" id="L379">        data.addCash_exist(conn,&quot;1dollar&quot;,String.valueOf(one_dollar));</span>
+
+<span class="nc" id="L381">        int fifty_cent = Integer.parseInt(data.getCashnumber(&quot;50cent&quot;));</span>
+<span class="nc" id="L382">        fifty_cent = fifty_cent-list.get(5);</span>
+<span class="nc" id="L383">        data.addCash_exist(conn,&quot;50cent&quot;,String.valueOf(fifty_cent));</span>
+
+<span class="nc" id="L385">        int twenty_cent = Integer.parseInt(data.getCashnumber(&quot;20cent&quot;));</span>
+<span class="nc" id="L386">        twenty_cent = twenty_cent-list.get(6);</span>
+<span class="nc" id="L387">        data.addCash_exist(conn,&quot;20cent&quot;,String.valueOf(twenty_cent));</span>
+
+<span class="nc" id="L389">        int ten_cent_count = Integer.parseInt(data.getCashnumber(&quot;10cent&quot;));</span>
+<span class="nc" id="L390">        ten_cent_count = ten_cent_count-list.get(7);</span>
+<span class="nc" id="L391">        data.addCash_exist(conn,&quot;10cent&quot;,String.valueOf(ten_cent_count));</span>
+
+<span class="nc" id="L393">        int five_cent = Integer.parseInt(data.getCashnumber(&quot;5cent&quot;));</span>
+<span class="nc" id="L394">        five_cent = five_cent-list.get(8);</span>
+<span class="nc" id="L395">        data.addCash(conn,&quot;5cent&quot;,String.valueOf(five_cent));</span>
+
+<span class="nc" id="L397">        return true;</span>
+        
+    }
+
+    public boolean getflag(){
+<span class="nc" id="L402">        return this.flag;</span>
+    }
+    public boolean getflag2(){
+<span class="nc" id="L405">        return this.flag2;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

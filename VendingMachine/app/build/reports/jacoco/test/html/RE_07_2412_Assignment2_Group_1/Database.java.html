@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Database.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">RE_07_2412_Assignment2_Group_1</a> &gt; <span class="el_source">Database.java</span></div><h1>Database.java</h1><pre class="source lang-java linenums">package RE_07_2412_Assignment2_Group_1;
+import java.sql.*;
+import java.util.*;
+
+<span class="nc" id="L5">public class Database {</span>
+<span class="nc" id="L6">    private Connection conn = null;</span>
+<span class="nc" id="L7">    private boolean flag = false;</span>
+<span class="nc" id="L8">    private boolean flag1 = false;</span>
+    public void connect() {
+        try {
+            // db parameters
+<span class="nc" id="L12">            String url = &quot;jdbc:sqlite:Product.db&quot;;</span>
+            // create a connection to the database
+<span class="nc" id="L14">            conn = DriverManager.getConnection(url);</span>
+
+<span class="nc" id="L16">            System.out.println(&quot;Connection to SQLite has been established.&quot;);</span>
+<span class="nc" id="L17">            flag1 = true;</span>
+
+<span class="nc" id="L19">        } catch (SQLException e) {</span>
+<span class="nc" id="L20">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L21">        } </span>
+<span class="nc" id="L22">    }</span>
+
+    //test
+    public Connection getConn(){
+<span class="nc" id="L26">        return this.conn;</span>
+    }
+
+    public void createTable(Connection conn) throws SQLException {
+        
+
+
+
+<span class="nc" id="L34">        String create = &quot;&quot;+</span>
+                &quot;CREATE TABLE IF NOT EXISTS Product &quot;+
+                &quot;(&quot;+
+                &quot;productcode varchar(225),&quot;+
+                &quot;productname varchar(225),&quot;+
+                &quot;producttype varchar(225),&quot;+
+                &quot;productnumber varchar(225),&quot;+
+                &quot;productprice varchar(225) &quot;+
+                
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L45">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L46">        sa.execute(create);</span>
+<span class="nc" id="L47">        sa.close();</span>
+<span class="nc" id="L48">        flag = true;</span>
+<span class="nc" id="L49">    }</span>
+    //test
+    public void createTablecash(Connection conn) throws SQLException{
+        
+<span class="nc" id="L53">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS Cash &quot;+
+                &quot;(&quot;+
+                &quot;cashtype varchar(225),&quot;+
+                &quot;cashnumber varchar(255) &quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L60">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L61">        sa.execute(create);</span>
+<span class="nc" id="L62">        sa.close();</span>
+<span class="nc" id="L63">        flag = true;</span>
+<span class="nc" id="L64">    }</span>
+    //test
+    public void createTableuser(Connection conn) throws SQLException{
+       
+<span class="nc" id="L68">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS User &quot;+
+                &quot;(&quot;+
+                &quot;username varchar(255), &quot;+
+                &quot;usertype varchar(255), &quot;+
+                &quot;userpassword varchar(255), &quot;+
+                &quot;usertrasaction varchar(225) &quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L77">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L78">        sa.execute(create);</span>
+<span class="nc" id="L79">        sa.close();</span>
+<span class="nc" id="L80">        flag = true;</span>
+<span class="nc" id="L81">    }</span>
+    public void createTableCard(Connection conn) throws SQLException{
+       
+<span class="nc" id="L84">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS Card &quot;+
+                &quot;(&quot;+
+                &quot;cardusername varchar(255), &quot;+
+                &quot;cardpassword varchar(255), &quot;+
+                &quot;username varchar(225) &quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L92">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L93">        sa.execute(create);</span>
+<span class="nc" id="L94">        sa.close();</span>
+<span class="nc" id="L95">        flag = true;</span>
+<span class="nc" id="L96">    }</span>
+    //test
+    public void createTableTransactionSumary(Connection conn) throws SQLException{
+       
+<span class="nc" id="L100">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS Transactionsummary &quot;+
+                &quot;(&quot;+
+                &quot;date varchar(255), &quot;+
+                &quot;itemsold varchar(255), &quot;+
+                &quot;moneypaid varchar(255), &quot;+
+                &quot;returnedchange varchar(255), &quot;+
+                &quot;paymentmethod varchar(225) &quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L110">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L111">        sa.execute(create);</span>
+<span class="nc" id="L112">        sa.close();</span>
+<span class="nc" id="L113">        flag = true;</span>
+<span class="nc" id="L114">    }</span>
+    //test
+    public void createTablecancel(Connection conn) throws SQLException{
+       
+<span class="nc" id="L118">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS Cancel &quot;+
+                &quot;(&quot;+
+                &quot;username varchar(255), &quot;+
+                &quot;date_time varchar(255), &quot;+
+                &quot;reason varchar(225) &quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L126">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L127">        sa.execute(create);</span>
+<span class="nc" id="L128">        sa.close();</span>
+<span class="nc" id="L129">        flag = true;</span>
+<span class="nc" id="L130">    }</span>
+    //test
+    public void createTablecurrentuser(Connection conn) throws SQLException{
+       
+<span class="nc" id="L134">        String del = &quot;&quot;+</span>
+        &quot;DROP TABLE IF EXISTS CurrentUser&quot;+
+                &quot;&quot;;
+<span class="nc" id="L137">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L138">        sa.execute(del);</span>
+
+<span class="nc" id="L140">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS CurrentUser &quot;+
+                &quot;(&quot;+
+                &quot;username varchar(255)&quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L146">        sa.execute(create);</span>
+<span class="nc" id="L147">        sa.close();</span>
+<span class="nc" id="L148">        flag = true;</span>
+<span class="nc" id="L149">    }</span>
+    //test
+    public void createTableSold(Connection conn) throws SQLException{
+        
+<span class="nc" id="L153">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS Sold &quot;+
+                &quot;(&quot;+
+                &quot;soldcode varchar(225),&quot;+
+                &quot;soldname varchar(255), &quot;+
+                &quot;soldnumber varchar(255) &quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L161">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L162">        sa.execute(create);</span>
+<span class="nc" id="L163">        sa.close();</span>
+<span class="nc" id="L164">        flag = true;</span>
+<span class="nc" id="L165">    }</span>
+
+    public void createTableSoldname(Connection conn) throws SQLException{
+        
+<span class="nc" id="L169">        String create = &quot;&quot;+</span>
+        &quot;CREATE TABLE IF NOT EXISTS Soldname1 &quot;+
+                &quot;(&quot;+
+                &quot;username varchar(225),&quot;+
+                &quot;soldname varchar(255) &quot;+
+                &quot;); &quot;+
+                &quot;&quot;;
+<span class="nc" id="L176">        Statement sa = conn.createStatement();</span>
+<span class="nc" id="L177">        sa.execute(create);</span>
+<span class="nc" id="L178">        sa.close();</span>
+<span class="nc" id="L179">        flag = true;</span>
+<span class="nc" id="L180">    }</span>
+    //test
+    public void addSold (Connection conn, String soldcode, String soldname, String soldnumber) throws SQLException {
+
+<span class="nc" id="L184">        String del = &quot;DELETE FROM Sold where soldname = ?&quot;;</span>
+<span class="nc" id="L185">        PreparedStatement st1 = conn.prepareStatement(del);</span>
+<span class="nc" id="L186">        st1.setString(1,soldname);</span>
+<span class="nc" id="L187">        st1.executeUpdate();</span>
+<span class="nc" id="L188">        st1.close();</span>
+<span class="nc" id="L189">        String save = &quot;INSERT INTO Sold(soldcode, soldname, soldnumber) VALUES(?,?,?)&quot;;</span>
+<span class="nc" id="L190">        st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L191">        st1.setString(1, soldcode);</span>
+<span class="nc" id="L192">        st1.setString(2, soldname);</span>
+<span class="nc" id="L193">        st1.setString(3, soldnumber);</span>
+<span class="nc" id="L194">        st1.executeUpdate();</span>
+<span class="nc" id="L195">        st1.close();</span>
+<span class="nc" id="L196">        flag = true;</span>
+<span class="nc" id="L197">    }</span>
+
+    public void addSoldname (Connection conn, String username, String soldname) throws SQLException {
+
+<span class="nc" id="L201">        String save = &quot;INSERT INTO Soldname1(username,soldname) VALUES(?,?)&quot;;</span>
+<span class="nc" id="L202">        PreparedStatement st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L203">        st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L204">        st1.setString(1, username);</span>
+<span class="nc" id="L205">        st1.setString(2, soldname);</span>
+<span class="nc" id="L206">        st1.executeUpdate();</span>
+<span class="nc" id="L207">        st1.close();</span>
+<span class="nc" id="L208">        flag = true;</span>
+<span class="nc" id="L209">    }</span>
+
+    public ArrayList getSoldname(String username) throws SQLException {
+
+<span class="nc" id="L213">        ArrayList&lt;String&gt; ls = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L214">        String result = &quot;select soldname from Soldname1 where username = ? order by rowid desc limit 5&quot;;</span>
+<span class="nc" id="L215">        PreparedStatement st2 = conn.prepareStatement(result);</span>
+<span class="nc" id="L216">        st2.setString(1,username);</span>
+<span class="nc" id="L217">        ResultSet rs2 = st2.executeQuery();</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        while (rs2.next()) {</span>
+<span class="nc" id="L219">            ls.add(rs2.getString(1));</span>
+        }
+<span class="nc" id="L221">        flag =true;</span>
+<span class="nc" id="L222">        return  ls;</span>
+    }
+    
+    //test
+    public void addCancel(Connection conn,String username,String date_time,String reason) throws SQLException {
+       
+<span class="nc" id="L228">        String save = &quot;INSERT INTO Cancel(username,date_time,reason) VALUES(?,?,?)&quot;;</span>
+<span class="nc" id="L229">        PreparedStatement st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L230">        st1.setString(1,username);</span>
+<span class="nc" id="L231">        st1.setString(2, date_time);</span>
+<span class="nc" id="L232">        st1.setString(3, reason);</span>
+<span class="nc" id="L233">        st1.executeUpdate();</span>
+<span class="nc" id="L234">        st1.close();</span>
+<span class="nc" id="L235">        flag = true;</span>
+<span class="nc" id="L236">    }</span>
+    //test
+    public void addCurrentUser(Connection conn,String username) throws SQLException {
+       
+<span class="nc" id="L240">        String save = &quot;INSERT INTO CurrentUser(username) VALUES(?)&quot;;</span>
+<span class="nc" id="L241">        PreparedStatement st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L242">        st1.setString(1,username);</span>
+<span class="nc" id="L243">        st1.executeUpdate();</span>
+<span class="nc" id="L244">        st1.close();</span>
+<span class="nc" id="L245">        flag = true;</span>
+<span class="nc" id="L246">    }</span>
+    //test
+    public ResultSet getCurrentUser() throws SQLException{
+    
+<span class="nc" id="L250">        String result = &quot;SELECT * from CurrentUser&quot;;</span>
+<span class="nc" id="L251">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L252">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L253">        flag = true;</span>
+<span class="nc" id="L254">        return rs;</span>
+    }
+    //test
+    public ResultSet getcancel() throws SQLException{
+    
+<span class="nc" id="L259">        String result = &quot;SELECT * from Cancel&quot;;</span>
+<span class="nc" id="L260">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L261">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L262">        flag = true;</span>
+<span class="nc" id="L263">        return rs;</span>
+    }
+    //test
+    public ResultSet getSold() throws SQLException {
+        
+<span class="nc" id="L268">        String result = &quot;SELECT * from Sold&quot;;</span>
+<span class="nc" id="L269">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L270">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L271">        flag = true;</span>
+<span class="nc" id="L272">        return rs;</span>
+    }
+    //test
+    public void addProduct(Connection conn, String productcode, String productname, String producttype, String productnumber, String productprice) throws SQLException {
+
+       
+<span class="nc" id="L278">        String del = &quot;DELETE FROM Product where productcode = ?&quot;;</span>
+        // String dell = &quot;DELETE FROM Product where productname = ?)&quot;;
+<span class="nc" id="L280">        PreparedStatement st1 = conn.prepareStatement(del);</span>
+        // PreparedStatement st11 = conn.prepareStatement(dell);
+<span class="nc" id="L282">        st1.setString(1,productcode);</span>
+<span class="nc" id="L283">        st1.executeUpdate();</span>
+<span class="nc" id="L284">        st1.close();</span>
+<span class="nc" id="L285">        String save = &quot;INSERT INTO Product(productcode, productname, producttype, productnumber, productprice) VALUES(?,?,?,?,?)&quot;;</span>
+<span class="nc" id="L286">        st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L287">        st1.setString(1,productcode);</span>
+<span class="nc" id="L288">        st1.setString(2,productname);</span>
+<span class="nc" id="L289">        st1.setString(3,producttype);</span>
+<span class="nc" id="L290">        st1.setString(4,productnumber);</span>
+<span class="nc" id="L291">        st1.setString(5,productprice);</span>
+        
+<span class="nc" id="L293">        st1.executeUpdate();</span>
+<span class="nc" id="L294">        st1.close();</span>
+<span class="nc" id="L295">        flag = true;</span>
+<span class="nc" id="L296">    }</span>
+    //test
+    public void addCash(Connection conn,String cashtype, String cashnumber) throws SQLException {
+
+<span class="nc" id="L300">        String del = &quot;DELETE FROM Cash where cashtype = ?&quot;;</span>
+<span class="nc" id="L301">        PreparedStatement st1 = conn.prepareStatement(del);</span>
+<span class="nc" id="L302">        st1.setString(1,cashtype);</span>
+<span class="nc" id="L303">        st1.executeUpdate();</span>
+<span class="nc" id="L304">        st1.close();</span>
+<span class="nc" id="L305">        String save = &quot;INSERT INTO Cash(cashtype,cashnumber) VALUES(?,?)&quot;;</span>
+<span class="nc" id="L306">        st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L307">        st1.setString(1,cashtype);</span>
+<span class="nc" id="L308">        st1.setString(2,cashnumber);</span>
+<span class="nc" id="L309">        st1.executeUpdate();</span>
+<span class="nc" id="L310">        st1.close();</span>
+<span class="nc" id="L311">        flag = true;</span>
+
+<span class="nc" id="L313">    }</span>
+    //text
+    public void addInituser(Connection conn,String username, String usertype,String password) throws SQLException {
+
+<span class="nc" id="L317">        String del = &quot;Delete from User where username = 'owner1'&quot;;</span>
+<span class="nc" id="L318">        PreparedStatement st1 = conn.prepareStatement(del);</span>
+<span class="nc" id="L319">        st1.executeUpdate();</span>
+<span class="nc" id="L320">        String save = &quot;INSERT INTO User(username,usertype,userpassword) VALUES(?,?,?)&quot;;</span>
+<span class="nc" id="L321">            st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L322">            st1.setString(1,username);</span>
+<span class="nc" id="L323">            st1.setString(2,usertype);</span>
+<span class="nc" id="L324">            st1.setString(3,password);</span>
+<span class="nc" id="L325">            st1.executeUpdate();</span>
+<span class="nc" id="L326">            st1.close();</span>
+<span class="nc" id="L327">            flag = true;</span>
+
+<span class="nc" id="L329">    }</span>
+    //test
+    public String getUsertype(String username,String password) throws SQLException{
+<span class="nc" id="L332">        String result = &quot;SELECT usertype from User WHERE username = ? AND userpassword = ?&quot;;</span>
+<span class="nc" id="L333">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L334">        st1.setString(1,username);</span>
+<span class="nc" id="L335">        st1.setString(2,password);</span>
+<span class="nc" id="L336">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L337">        flag = true;</span>
+<span class="nc" id="L338">        return rs.getString(1);</span>
+    }
+    //test
+    public void addCash_exist(Connection conn,String cashtype, String cashnumber) throws SQLException {
+
+<span class="nc bnc" id="L343" title="All 2 branches missed.">        if(checkcash(cashtype, cashnumber) == true){</span>
+<span class="nc" id="L344">         String del = &quot;DELETE FROM Cash where cashtype = ?&quot;;</span>
+<span class="nc" id="L345">         PreparedStatement st1 = conn.prepareStatement(del);</span>
+<span class="nc" id="L346">         st1.setString(1,cashtype);</span>
+<span class="nc" id="L347">         st1.executeUpdate();</span>
+<span class="nc" id="L348">         st1.close();</span>
+<span class="nc" id="L349">         String save = &quot;INSERT INTO Cash(cashtype,cashnumber) VALUES(?,?)&quot;;</span>
+<span class="nc" id="L350">         st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L351">         st1.setString(1,cashtype);</span>
+<span class="nc" id="L352">         st1.setString(2,cashnumber);</span>
+<span class="nc" id="L353">         st1.executeUpdate();</span>
+<span class="nc" id="L354">         st1.close();</span>
+<span class="nc" id="L355">         flag = true;</span>
+         
+<span class="nc" id="L357">        }else{</span>
+<span class="nc" id="L358">         System.out.println(&quot;Can't add &quot;+cashnumber+ &quot;many cash under &quot;+cashtype);</span>
+<span class="nc" id="L359">         flag = true;</span>
+        }
+ 
+<span class="nc" id="L362">     }</span>
+    //test
+    public Integer checkexistanceuser(String username) throws SQLException{
+        
+<span class="nc" id="L366">        String check = &quot;SELECT EXISTS(SELECT 1 FROM User WHERE username =?)&quot;;</span>
+<span class="nc" id="L367">        PreparedStatement st1 = conn.prepareStatement(check);</span>
+<span class="nc" id="L368">        st1.setString(1,username);</span>
+<span class="nc" id="L369">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L370">        flag = true;</span>
+<span class="nc" id="L371">        return rs.getInt(1);</span>
+       
+    }
+    //test
+    public Integer checkexistanceusertype(String usertype) throws SQLException{
+        
+<span class="nc" id="L377">        String check = &quot;SELECT EXISTS(SELECT 1 FROM User WHERE usertype =?)&quot;;</span>
+<span class="nc" id="L378">        PreparedStatement st1 = conn.prepareStatement(check);</span>
+<span class="nc" id="L379">        st1.setString(1,usertype);</span>
+<span class="nc" id="L380">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L381">        flag = true;</span>
+<span class="nc" id="L382">        return rs.getInt(1);</span>
+       
+    }
+    public Integer checkcardnmae(String cardname, String cardpassword) throws SQLException{
+        
+<span class="nc" id="L387">        String check = &quot;SELECT EXISTS(SELECT 1 FROM Card WHERE cardusername =? and cardpassword =?)&quot;;</span>
+<span class="nc" id="L388">        PreparedStatement st1 = conn.prepareStatement(check);</span>
+<span class="nc" id="L389">        st1.setString(1,cardname);</span>
+<span class="nc" id="L390">        st1.setString(2, cardpassword);</span>
+<span class="nc" id="L391">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L392">        flag = true;</span>
+<span class="nc" id="L393">        return rs.getInt(1);</span>
+    
+    }
+
+    //test
+    public Integer checkexistancevaliduser(String username,String password) throws SQLException{
+       
+<span class="nc" id="L400">        String check = &quot;SELECT EXISTS(SELECT 1 FROM User WHERE username =? AND userpassword = ?)&quot;;</span>
+<span class="nc" id="L401">        PreparedStatement st1 = conn.prepareStatement(check);</span>
+<span class="nc" id="L402">        st1.setString(1,username);</span>
+<span class="nc" id="L403">        st1.setString(2, password);</span>
+<span class="nc" id="L404">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L405">        flag = true;</span>
+<span class="nc" id="L406">        return rs.getInt(1);</span>
+    }
+    public boolean addCard(Connection conn,String cardusername,String cardpassword, String username) throws SQLException {
+       
+
+<span class="nc bnc" id="L411" title="All 2 branches missed.">        if(checkcardnmae(cardusername,cardpassword)==1){</span>
+<span class="nc" id="L412">            System.out.println(&quot;Card already here&quot;);</span>
+<span class="nc" id="L413">            flag = true;</span>
+<span class="nc" id="L414">            return false;</span>
+        }else{
+<span class="nc" id="L416">            String save = &quot;INSERT INTO Card(cardusername,cardpassword,username) VALUES(?,?,?)&quot;;</span>
+<span class="nc" id="L417">            PreparedStatement st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L418">            st1.setString(1,cardusername);</span>
+<span class="nc" id="L419">            st1.setString(2, cardpassword);</span>
+<span class="nc" id="L420">            st1.setString(3, username);</span>
+<span class="nc" id="L421">            st1.executeUpdate();</span>
+<span class="nc" id="L422">            st1.close();</span>
+<span class="nc" id="L423">            flag = true;</span>
+<span class="nc" id="L424">            return true;</span>
+        }
+
+       
+    }
+    //test
+    public boolean addUser(Connection conn,String username,String usertype, String userpassword) throws SQLException {
+       
+
+<span class="nc bnc" id="L433" title="All 2 branches missed.">        if(checkexistanceuser(username)==1){</span>
+<span class="nc" id="L434">            System.out.println(&quot;user already here&quot;);</span>
+<span class="nc" id="L435">            flag = true;</span>
+<span class="nc" id="L436">            return false;</span>
+        }else{
+<span class="nc" id="L438">            String save = &quot;INSERT INTO User(username,usertype,userpassword) VALUES(?,?,?)&quot;;</span>
+<span class="nc" id="L439">            PreparedStatement st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L440">            st1.setString(1,username);</span>
+<span class="nc" id="L441">            st1.setString(2, usertype);</span>
+<span class="nc" id="L442">            st1.setString(3, userpassword);</span>
+<span class="nc" id="L443">            st1.executeUpdate();</span>
+<span class="nc" id="L444">            st1.close();</span>
+<span class="nc" id="L445">            flag = true;</span>
+<span class="nc" id="L446">            return true;</span>
+        }
+
+       
+    }
+    //test
+    public String getcashData() throws SQLException{
+<span class="nc" id="L453">        String a = &quot;cashtype&quot; + &quot;\t&quot; + &quot;cashnumber&quot; + &quot;\n&quot;;</span>
+<span class="nc" id="L454">        String result = &quot;SELECT * from Cash&quot;;</span>
+<span class="nc" id="L455">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L456">        ResultSet rs = st1.executeQuery();</span>
+        
+<span class="nc bnc" id="L458" title="All 2 branches missed.">        while (rs.next()) {</span>
+<span class="nc" id="L459">            String cashtype = rs.getString(&quot;cashtype&quot;);</span>
+<span class="nc" id="L460">            String cashnumber = rs.getString(&quot;cashnumber&quot;);</span>
+            
+<span class="nc" id="L462">            a += cashtype+&quot;\t&quot;+cashnumber + &quot;\n&quot;;</span>
+         
+            
+            
+<span class="nc" id="L466">        }</span>
+<span class="nc" id="L467">        flag = true;</span>
+<span class="nc" id="L468">        return a;</span>
+    }
+
+
+    //test
+    public ResultSet getProductData() throws SQLException{
+    
+<span class="nc" id="L475">        String result = &quot;SELECT * from Product&quot;;</span>
+<span class="nc" id="L476">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L477">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L478">        flag = true;</span>
+<span class="nc" id="L479">        return rs;</span>
+    }
+    //test
+    public ResultSet getUserData() throws SQLException{
+    
+<span class="nc" id="L484">        String result = &quot;SELECT * from User&quot;;</span>
+<span class="nc" id="L485">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L486">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L487">        flag = true;</span>
+<span class="nc" id="L488">        return rs;</span>
+    }
+    public ResultSet getUsernameFromCard() throws SQLException{
+    
+<span class="nc" id="L492">        String result = &quot;SELECT username from Card&quot;;</span>
+<span class="nc" id="L493">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L494">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L495">        flag = true;</span>
+<span class="nc" id="L496">        return rs;</span>
+    }
+    //test
+    public void addUserType(Connection conn,String username,String usertype) throws SQLException {
+       
+
+<span class="nc bnc" id="L502" title="All 2 branches missed.">        if(checkexistanceuser(username)==1){</span>
+<span class="nc" id="L503">            System.out.println(&quot;user already here&quot;);</span>
+        }else{
+<span class="nc" id="L505">            String save = &quot;INSERT INTO User(username,usertype) VALUES(?,?)&quot;;</span>
+<span class="nc" id="L506">            PreparedStatement st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L507">            st1.setString(1,username);</span>
+<span class="nc" id="L508">            st1.setString(2,usertype);</span>
+<span class="nc" id="L509">            st1.executeUpdate();</span>
+<span class="nc" id="L510">            st1.close();</span>
+<span class="nc" id="L511">            flag = true;</span>
+        }
+<span class="nc" id="L513">    }</span>
+    //test
+    public void addTransaction(Connection conn,String date,String itemsold, String moneypaid, String returnedchange, String paymentmethod ) throws SQLException {
+       
+
+        
+<span class="nc" id="L519">        String save = &quot;INSERT INTO Transactionsummary(date,itemsold,moneypaid,returnedchange,paymentmethod) VALUES(?,?,?,?,?)&quot;;</span>
+<span class="nc" id="L520">        PreparedStatement st1 = conn.prepareStatement(save);</span>
+<span class="nc" id="L521">        st1.setString(1,date);</span>
+<span class="nc" id="L522">        st1.setString(2,itemsold);</span>
+<span class="nc" id="L523">        st1.setString(3,moneypaid);</span>
+<span class="nc" id="L524">        st1.setString(4,returnedchange);</span>
+<span class="nc" id="L525">        st1.setString(5,paymentmethod);</span>
+<span class="nc" id="L526">        st1.executeUpdate();</span>
+<span class="nc" id="L527">        st1.close();</span>
+<span class="nc" id="L528">        flag = true;</span>
+    
+<span class="nc" id="L530">    }</span>
+    //test
+    public String getTransactionSummary() throws SQLException{
+<span class="nc" id="L533">        String a = &quot;date&quot; + &quot;\t&quot; + &quot;itemsold&quot; +&quot;\t&quot; + &quot;moneypaid&quot; +&quot;\t&quot; + &quot;returnedchange&quot; +&quot;\t&quot; + &quot;paymentmethod&quot; + &quot;\n&quot;;</span>
+<span class="nc" id="L534">        String result = &quot;SELECT * from Transactionsummary&quot;;</span>
+<span class="nc" id="L535">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L536">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L537">        flag = true;</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">        while (rs.next()) {</span>
+<span class="nc" id="L539">            String date = rs.getString(&quot;date&quot;);</span>
+<span class="nc" id="L540">            String itemsold = rs.getString(&quot;itemsold&quot;);</span>
+<span class="nc" id="L541">            String moneypaid = rs.getString(&quot;moneypaid&quot;);</span>
+<span class="nc" id="L542">            String returnedchange = rs.getString(&quot;returnedchange&quot;);</span>
+<span class="nc" id="L543">            String paymentmethod = rs.getString(&quot;paymentmethod&quot;);</span>
+<span class="nc" id="L544">            a += date+&quot;\t&quot;+itemsold +&quot;\t&quot;+moneypaid +&quot;\t&quot;+returnedchange +&quot;\t&quot;+paymentmethod + &quot;\n&quot;;</span>
+         
+            
+            
+<span class="nc" id="L548">        }</span>
+<span class="nc" id="L549">        flag = true;</span>
+<span class="nc" id="L550">        return a;</span>
+    }
+    //test
+    public void delUserType(Connection conn,String username) throws SQLException {
+       
+
+<span class="nc bnc" id="L556" title="All 2 branches missed.">        if(checkexistanceuser(username)!=1){</span>
+<span class="nc" id="L557">            System.out.println(&quot;user not found&quot;);</span>
+        }else{
+<span class="nc" id="L559">            String del = &quot;DELETE FROM User where username = ?&quot;;</span>
+<span class="nc" id="L560">            PreparedStatement st1 = conn.prepareStatement(del);</span>
+<span class="nc" id="L561">            st1.setString(1,username);</span>
+<span class="nc" id="L562">            st1.executeUpdate();</span>
+<span class="nc" id="L563">            st1.close();</span>
+<span class="nc" id="L564">            flag = true;</span>
+        }
+<span class="nc" id="L566">    }</span>
+    //test
+    public String getProductNumber(String productname) throws SQLException{
+<span class="nc" id="L569">        String result = &quot;SELECT productnumber from Product where productname = ?&quot;;</span>
+<span class="nc" id="L570">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L571">        st1.setString(1,productname);</span>
+<span class="nc" id="L572">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L573">        flag = true;</span>
+<span class="nc" id="L574">        return rs.getString(1);</span>
+    }
+    //test
+    public String getProductprice(String productname) throws SQLException{
+<span class="nc" id="L578">        String result = &quot;SELECT productprice from Product where productname = ?&quot;;</span>
+<span class="nc" id="L579">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L580">        st1.setString(1,productname);</span>
+<span class="nc" id="L581">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L582">        flag = true;</span>
+<span class="nc" id="L583">        return rs.getString(1);</span>
+    }
+    //test
+    public String getCashnumber(String cashtype) throws SQLException{
+<span class="nc" id="L587">        String result = &quot;SELECT cashnumber from Cash where cashtype = ?&quot;;</span>
+<span class="nc" id="L588">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L589">        st1.setString(1,cashtype);</span>
+<span class="nc" id="L590">        ResultSet rs = st1.executeQuery();</span>
+<span class="nc" id="L591">        flag = true;</span>
+<span class="nc" id="L592">        return rs.getString(1);</span>
+    }
+    //test
+    public String getSoldNumber(String soldname) throws SQLException {
+<span class="nc" id="L596">        String result = &quot;SELECT soldnumber from Sold where soldname = ?&quot;;</span>
+<span class="nc" id="L597">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L598">        st1.setString(1,soldname);</span>
+<span class="nc" id="L599">        ResultSet rs1 = st1.executeQuery();</span>
+<span class="nc" id="L600">        flag = true;</span>
+<span class="nc" id="L601">        return rs1.getString(1);</span>
+    }
+    //test
+    public String getSoldCode(String soldname) throws SQLException {
+<span class="nc" id="L605">        String result = &quot;SELECT soldcode from Sold where soldname = ?&quot;;</span>
+<span class="nc" id="L606">        PreparedStatement st2 = conn.prepareStatement(result);</span>
+<span class="nc" id="L607">        st2.setString(1,soldname);</span>
+<span class="nc" id="L608">        ResultSet rs2 = st2.executeQuery();</span>
+<span class="nc" id="L609">        flag = true;</span>
+<span class="nc" id="L610">        return rs2.getString(1);</span>
+    }
+    //test
+    public boolean checkcash(String cashtype, String cashnumber) throws SQLException{
+<span class="nc" id="L614">        String result = &quot;SELECT cashnumber from Cash where cashtype = ?&quot;;</span>
+<span class="nc" id="L615">        PreparedStatement st1 = conn.prepareStatement(result);</span>
+<span class="nc" id="L616">        st1.setString(1,cashtype);</span>
+        
+<span class="nc" id="L618">        flag = true;</span>
+<span class="nc bnc" id="L619" title="All 4 branches missed.">        if(cashtype.equals(&quot;5cent&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 40){</span>
+<span class="nc" id="L620">            return true;</span>
+<span class="nc bnc" id="L621" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;10cent&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 20){</span>
+<span class="nc" id="L622">            return true;</span>
+<span class="nc bnc" id="L623" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;20cent&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 10){</span>
+<span class="nc" id="L624">            return true;</span>
+<span class="nc bnc" id="L625" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;50cent&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 10){</span>
+<span class="nc" id="L626">            return true;</span>
+<span class="nc bnc" id="L627" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;1dollar&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 20){</span>
+<span class="nc" id="L628">            return true;</span>
+<span class="nc bnc" id="L629" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;2dollar&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 25){</span>
+<span class="nc" id="L630">            return true;</span>
+<span class="nc bnc" id="L631" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;5dollar&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 10){</span>
+<span class="nc" id="L632">            return true;</span>
+<span class="nc bnc" id="L633" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;10dollar&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 10){</span>
+<span class="nc" id="L634">            return true;</span>
+<span class="nc bnc" id="L635" title="All 4 branches missed.">        }else if(cashtype.equals(&quot;20dollar&quot;) &amp;&amp;  Integer.parseInt(cashnumber)&lt;= 10){</span>
+<span class="nc" id="L636">            return true;</span>
+        }
+        else{
+<span class="nc" id="L639">            return false;</span>
+        }
+
+    }
+
+    public boolean getflag(){
+<span class="nc" id="L645">        return this.flag;</span>
+    }
+    public boolean getflag1(){
+<span class="nc" id="L648">        return this.flag1;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Customer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">RE_07_2412_Assignment2_Group_1</a> &gt; <span class="el_source">Customer.java</span></div><h1>Customer.java</h1><pre class="source lang-java linenums">package RE_07_2412_Assignment2_Group_1;
+
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask; 
+
+import javax.naming.spi.DirStateFactory.Result;
+
+
+<span class="nc" id="L14">public class Customer {</span>
+    // private static Connection conn;
+    // private static Database data = new Database();
+    private float e;
+    private float m;
+    // Scanner sc = new Scanner(System.in);
+    // String Payment = sc.next();
+<span class="nc" id="L21">    String Payment = &quot;Cash&quot;;</span>
+    public static int n;
+
+    //float amount = sc.nextFloat();
+<span class="nc" id="L25">    private boolean flag = false;</span>
+<span class="nc" id="L26">    private boolean flag1 = false;</span>
+
+    public void cancelaccept(Database data,Connection conn,String cancel)throws SQLException{
+        //add the canceled trascript
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if(cancel.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L31">            ResultSet rs1 = data.getCurrentUser();</span>
+<span class="nc" id="L32">            String currentname = rs1.getString(&quot;username&quot;);</span>
+<span class="nc" id="L33">            String reason = &quot;Customer cancel&quot;;</span>
+<span class="nc" id="L34">            SimpleDateFormat df = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
+<span class="nc" id="L35">            String date = df.format(new Date());</span>
+<span class="nc" id="L36">            data.addCancel(conn, currentname, date, reason);</span>
+<span class="nc" id="L37">            flag = true;</span>
+        //end
+        }
+<span class="nc" id="L40">    }</span>
+
+    public String choosePayment(Connection conn,Database data) throws SQLException{   
+<span class="nc" id="L43">        System.out.println(&quot;Choose a payment:&quot;);</span>
+<span class="nc" id="L44">        System.out.println(&quot;Cash&quot;);</span>
+<span class="nc" id="L45">        System.out.println(&quot;Card&quot;);</span>
+<span class="nc bnc" id="L46" title="All 4 branches missed.">        if (Payment.toLowerCase() == &quot;card&quot; || Payment.toLowerCase() == &quot;cash&quot;) {</span>
+<span class="nc" id="L47">            flag = true;</span>
+<span class="nc" id="L48">            return Payment;</span>
+        }
+<span class="nc" id="L50">        System.out.println(&quot;Wrong payment!&quot;);</span>
+        //add the canceled trascript
+<span class="nc" id="L52">        ResultSet rs = data.getCurrentUser();</span>
+<span class="nc" id="L53">        String currentname = rs.getString(&quot;username&quot;);</span>
+<span class="nc" id="L54">        String reason = &quot;Wrong payment&quot;;</span>
+<span class="nc" id="L55">        SimpleDateFormat df = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
+<span class="nc" id="L56">        String date = df.format(new Date());</span>
+<span class="nc" id="L57">        data.addCancel(conn, currentname, date, reason);</span>
+<span class="nc" id="L58">        flag = true;</span>
+        //end
+<span class="nc" id="L60">        return &quot;false&quot;;</span>
+        
+    }
+
+    public static int getn() {
+<span class="nc" id="L65">        return n;</span>
+    }
+    // public boolean isEnoughMoney() {
+    //     if (amount - m &gt; e) { // customer pay - price &gt; left amount in machine
+    //         System.out.println(&quot;There is no enough money in the vending machine to provide change!&quot;);
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
+    // public boolean getCorrectChange() {
+    //     return false;
+    // }
+
+    public String buyProduct(String choice_input, Database data, Connection conn) throws IOException, SQLException{
+
+        // data.connect();
+        // conn = data.getConn();
+<span class="nc" id="L83">        data.createTableuser(conn);</span>
+<span class="nc" id="L84">        data.createTable(conn);</span>
+<span class="nc" id="L85">        data.createTableSold(conn);</span>
+<span class="nc" id="L86">        String result_choice = &quot;&quot;;</span>
+<span class="nc" id="L87">        Scanner sc = new Scanner(System.in);</span>
+<span class="nc" id="L88">        System.out.println(&quot;What kind of product whould you like?&quot;);</span>
+<span class="nc" id="L89">        System.out.println(&quot;drinks,chocolates,chips or candies?&quot;);</span>
+<span class="nc" id="L90">        System.out.println(&quot;Enter your option&quot;);</span>
+<span class="nc" id="L91">        String choice = choice_input;</span>
+<span class="nc" id="L92">        ResultSet rs = data.getProductData();</span>
+        // ResultSet s = data.getSold();
+<span class="nc" id="L94">        ArrayList&lt;String&gt; ls = new ArrayList&lt;String&gt;();</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (choice.equals(&quot;drinks&quot;)){</span>
+<span class="nc" id="L96">            System.out.println(&quot;What kind of drinks whould you like?&quot;);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            while (rs.next()){</span>
+<span class="nc" id="L98">                String productcode = rs.getString(&quot;productcode&quot;);</span>
+<span class="nc" id="L99">                String productname = rs.getString(&quot;productname&quot;);</span>
+<span class="nc" id="L100">                String producttype = rs.getString(&quot;producttype&quot;);</span>
+<span class="nc" id="L101">                String productnumber_string = rs.getString(&quot;productnumber&quot;);</span>
+<span class="nc" id="L102">                String productprice = rs.getString(&quot;productprice&quot;);</span>
+<span class="nc" id="L103">                Integer productnumber = Integer.parseInt(productnumber_string);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                if(producttype.equals(&quot;drinks&quot;)){</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">                    if(productnumber &gt;0){</span>
+<span class="nc" id="L106">                        ls.add(productname);</span>
+<span class="nc" id="L107">                        flag = true; </span>
+                    }
+                }    
+<span class="nc" id="L110">            }</span>
+<span class="nc" id="L111">            System.out.println(ls);</span>
+<span class="nc" id="L112">            String choicedrink = sc.nextLine();</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if(choicedrink.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L114">                flag1=true;</span>
+<span class="nc" id="L115">                cancelaccept(data, conn, choicedrink);</span>
+<span class="nc" id="L116">                return &quot;cancel&quot;;</span>
+            }
+            // if (Integer.parseInt(data.getProductNumber(choicedrink)) == 0) {
+            //     System.out.printf(&quot;There is no %s in the vending machine.&quot;, choicedrink);
+            // } 
+            while (true) {
+<span class="nc" id="L122">                System.out.println(&quot;How many do you want to buy?&quot;);</span>
+<span class="nc" id="L123">                n = sc.nextInt();</span>
+<span class="nc" id="L124">                String pn = data.getProductNumber(choicedrink);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                if (n &gt; Integer.parseInt(pn)) {</span>
+<span class="nc" id="L126">                    System.out.println(&quot;Only &quot; + pn + &quot; in the machine. Please choose again.&quot;);</span>
+<span class="nc" id="L127">                    continue;</span>
+                } else {
+<span class="nc" id="L129">                    result_choice = choicedrink;</span>
+<span class="nc" id="L130">                    break;</span>
+                }
+            }
+            
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        }else if (choice.equals(&quot;chocolates&quot;)){</span>
+<span class="nc" id="L135">            System.out.println(&quot;What kind of drinks whould you like?&quot;);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            while (rs.next()){</span>
+<span class="nc" id="L137">                String productcode = rs.getString(&quot;productcode&quot;);</span>
+<span class="nc" id="L138">                String productname = rs.getString(&quot;productname&quot;);</span>
+<span class="nc" id="L139">                String producttype = rs.getString(&quot;producttype&quot;);</span>
+<span class="nc" id="L140">                String productnumber_string = rs.getString(&quot;productnumber&quot;);</span>
+<span class="nc" id="L141">                String productprice = rs.getString(&quot;productprice&quot;);</span>
+<span class="nc" id="L142">                Integer productnumber = Integer.parseInt(productnumber_string);</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                if(producttype.equals(&quot;chocolates&quot;)){</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                    if(productnumber &gt;0){</span>
+<span class="nc" id="L145">                        ls.add(productname);</span>
+<span class="nc" id="L146">                        flag = true; </span>
+                    }
+                }    
+<span class="nc" id="L149">            }</span>
+<span class="nc" id="L150">            System.out.println(ls);</span>
+<span class="nc" id="L151">            String choicechocolate = sc.nextLine();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if(choicechocolate.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L153">                flag1=true;</span>
+<span class="nc" id="L154">                cancelaccept(data, conn, choicechocolate);</span>
+<span class="nc" id="L155">                return &quot;cancel&quot;;</span>
+            }
+            // if (Integer.parseInt(data.getProductNumber(choicechocolate)) == 0) {
+            //     System.out.printf(&quot;There is no %s in the vending machine.&quot;, choicechocolate);
+            // }
+            while (true) {
+<span class="nc" id="L161">                System.out.println(&quot;How many do you want to buy?&quot;);</span>
+<span class="nc" id="L162">                n = sc.nextInt();</span>
+<span class="nc" id="L163">                String pn = data.getProductNumber(choicechocolate);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                if (n &gt; Integer.parseInt(pn)) {</span>
+<span class="nc" id="L165">                    System.out.println(&quot;Only &quot; + pn + &quot; in the machine. Please choose again.&quot;);</span>
+<span class="nc" id="L166">                    continue;</span>
+                } else {
+<span class="nc" id="L168">                    result_choice = choicechocolate;</span>
+<span class="nc" id="L169">                    break;</span>
+                }
+            }
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        }else if (choice.equals(&quot;chips&quot;)){</span>
+<span class="nc" id="L173">            System.out.println(&quot;What kind of drinks whould you like?&quot;);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            while (rs.next()){</span>
+<span class="nc" id="L175">                String productcode = rs.getString(&quot;productcode&quot;);</span>
+<span class="nc" id="L176">                String productname = rs.getString(&quot;productname&quot;);</span>
+<span class="nc" id="L177">                String producttype = rs.getString(&quot;producttype&quot;);</span>
+<span class="nc" id="L178">                String productnumber_string = rs.getString(&quot;productnumber&quot;);</span>
+<span class="nc" id="L179">                String productprice = rs.getString(&quot;productprice&quot;);</span>
+<span class="nc" id="L180">                Integer productnumber = Integer.parseInt(productnumber_string);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                if(producttype.equals(&quot;chips&quot;)){</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                    if(productnumber &gt;0){</span>
+<span class="nc" id="L183">                        ls.add(productname);</span>
+<span class="nc" id="L184">                        flag = true; </span>
+                    }
+                }    
+<span class="nc" id="L187">            }</span>
+<span class="nc" id="L188">            System.out.println(ls);</span>
+<span class="nc" id="L189">            String choicechip = sc.nextLine();</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">            if(choicechip.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L191">                flag1=true;</span>
+<span class="nc" id="L192">                cancelaccept(data, conn, choicechip);</span>
+<span class="nc" id="L193">                return &quot;cancel&quot;;</span>
+            }
+            // if (Integer.parseInt(data.getProductNumber(choicechip)) == 0) {
+            //     System.out.printf(&quot;There is no %s in the vending machine.&quot;, choicechip);
+            // }
+            while (true) {
+<span class="nc" id="L199">                System.out.println(&quot;How many do you want to buy?&quot;);</span>
+<span class="nc" id="L200">                n = sc.nextInt();</span>
+<span class="nc" id="L201">                String pn = data.getProductNumber(choicechip);</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">                if (n &gt; Integer.parseInt(pn)) {</span>
+<span class="nc" id="L203">                    System.out.println(&quot;Only &quot; + pn + &quot; in the machine. Please choose again.&quot;);</span>
+<span class="nc" id="L204">                    continue;</span>
+                } else {
+<span class="nc" id="L206">                    result_choice = choicechip;</span>
+<span class="nc" id="L207">                    break;</span>
+                }
+            }
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        }else if (choice.equals(&quot;candies&quot;)){</span>
+<span class="nc" id="L211">            System.out.println(&quot;What kind of drinks whould you like?&quot;);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            while (rs.next()){</span>
+<span class="nc" id="L213">                String productcode = rs.getString(&quot;productcode&quot;);</span>
+<span class="nc" id="L214">                String productname = rs.getString(&quot;productname&quot;);</span>
+<span class="nc" id="L215">                String producttype = rs.getString(&quot;producttype&quot;);</span>
+<span class="nc" id="L216">                String productnumber_string = rs.getString(&quot;productnumber&quot;);</span>
+<span class="nc" id="L217">                String productprice = rs.getString(&quot;productprice&quot;);</span>
+<span class="nc" id="L218">                Integer productnumber = Integer.parseInt(productnumber_string);</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                if(producttype.equals(&quot;candies&quot;)){</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                    if(productnumber &gt;0){</span>
+<span class="nc" id="L221">                        ls.add(productname);</span>
+<span class="nc" id="L222">                        flag = true; </span>
+                    }
+                }    
+<span class="nc" id="L225">            }</span>
+<span class="nc" id="L226">            System.out.println(ls);</span>
+<span class="nc" id="L227">            String choicecandy = sc.nextLine();</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">            if(choicecandy.equals(&quot;cancel&quot;)){</span>
+<span class="nc" id="L229">                flag1=true;</span>
+<span class="nc" id="L230">                cancelaccept(data, conn, choicecandy);</span>
+<span class="nc" id="L231">                return &quot;cancel&quot;;</span>
+            }
+            // if (Integer.parseInt(data.getProductNumber(choicecandy)) == 0) {
+            //     System.out.printf(&quot;There is no %s in the vending machine.&quot;, choicecandy);
+            // }
+            while (true) {
+<span class="nc" id="L237">                System.out.println(&quot;How many do you want to buy?&quot;);</span>
+<span class="nc" id="L238">                n = sc.nextInt();</span>
+<span class="nc" id="L239">                String pn = data.getProductNumber(choicecandy);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                if (n &gt; Integer.parseInt(pn)) {</span>
+<span class="nc" id="L241">                    System.out.println(&quot;Only &quot; + pn + &quot; in the machine. Please choose again.&quot;);</span>
+<span class="nc" id="L242">                    continue;</span>
+                } else {
+<span class="nc" id="L244">                    result_choice = choicecandy;</span>
+<span class="nc" id="L245">                    break;</span>
+                }
+            }
+        }
+<span class="nc" id="L249">        return result_choice;</span>
+
+        
+    }
+    public boolean getflag(){
+<span class="nc" id="L254">        return this.flag;</span>
+    }
+
+    public boolean getflag1(){
+<span class="nc" id="L258">        return this.flag1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
